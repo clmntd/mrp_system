@@ -20,7 +20,7 @@ const Sidebar = () => {
       <CDBSidebar textColor="#000" backgroundColor="#f8f9fa">
         <CDBSidebarHeader prefix={<i className="fa fa-bars"></i>}>
           <a href="/Dashboard" className="text-decoration-none" style={{ color: 'inherit'}}>
-            ALLVASCULAR MRP
+            MRP
           </a>
         </CDBSidebarHeader>
         <CDBSidebarContent className="sidebar-content">

@@ -349,7 +349,7 @@ export default function ColumnTypesGrid() {
     },
     {
       field: "variant",
-      headerName: "Variant",
+      headerName: "Type",
       width: 130,
       headerAlign: "center",
       align: "center",
