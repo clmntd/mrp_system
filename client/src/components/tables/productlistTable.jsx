@@ -218,7 +218,7 @@ export default function ColumnTypesGrid() {
       .then((data) => {
         for (let i = 0; i < data.length; i++) {
           var obj = data[i];
-          Object.assign(obj, { ["id"]: i });
+          Object.assign(obj, { ["id"]: obj["product_id"] });
           data[i] = obj;
           initialRows[i] = obj;
         }
@@ -246,10 +246,28 @@ export default function ColumnTypesGrid() {
     setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.View } });
   };
 
-  const handleDeleteClick = (id) => () => {
-    console.log("delete " + id);
-    console.log(rows.at(id));
-    setRows(rows.filter((row) => row.id !== id));
+
+  const handleDeleteClick = (id) => async () => {
+    console.log("id is " +id)
+    await fetch(`http://localhost:3002/product/delete/${id}`, {
+      method: 'DELETE',
+      body: JSON.stringify({}),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    fetch("http://localhost:3002/product/view")
+      .then((data) => data.json())
+      .then((data) => {
+        for (let i = 0; i < data.length; i++) {
+          var obj = data[i];
+          Object.assign(obj, { ["id"]: obj["product_id"] });
+          data[i] = obj;
+          initialRows[i] = obj;
+        }
+
+        setTableData(data);
+      });
   };
 
   const handleCancelClick = (id) => () => {

@@ -70,7 +70,7 @@ router.put("/product/update/:id", urlencodedParser, async (req, res) => {
 router.delete("/product/delete/:id", urlencodedParser, async (req, res) => {
   try {
     const { id } = req.params;
-    const deleteProduct = await pool.query(
+    await pool.query(
       `delete from public.product where product_id = $1`,
       [id]
     );

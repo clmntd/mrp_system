@@ -172,7 +172,10 @@ router.put("/updatermnprod", urlencodedParser, async (req, res) => {
 router.delete("/delete/:id", urlencodedParser, async (req, res) => {
   try {
     const { id } = req.params;
-    await pool.query(`delete from public.product_lot where ds_part_no= $1`, [
+    await pool.query(`delete from public.raw_materials_of_product where lot_no= $1`,[
+      id,
+    ]);
+    await pool.query(`delete from public.product_lot where lot_no= $1`, [
       id,
     ]);
     res.json("Product Lot was deleted!");

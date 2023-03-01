@@ -196,6 +196,7 @@ export default function ColumnTypesGrid() {
   const navigate = useNavigate();
 
   const [tableData, setTableData] = useState([]);
+
   useEffect(() => {
     fetch("http://localhost:3002/productlot/view/")
       .then((data) => data.json())
@@ -228,9 +229,25 @@ export default function ColumnTypesGrid() {
     setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.View } });
   };
 
-  const handleDeleteClick = (id) => () => {
-    setRows(rows.filter((row) => row.id !== id));
-    console.log(id)
+  const handleDeleteClick = (id) => async () => {
+    await fetch(`http://localhost:3002/productlot/delete/${id}`, {
+      method: 'DELETE',
+      body: JSON.stringify({}),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    fetch("http://localhost:3002/productlot/view/")
+      .then((data) => data.json())
+      .then((data) => {
+        for (let i = 0; i < data.length; i++) {
+          var obj = data[i];
+          Object.assign(obj, { ["id"]: obj["lot_no"] });
+          data[i] = obj;
+        }
+
+        setTableData(data);
+      });
   };
 
   const handleCancelClick = (id) => () => {
