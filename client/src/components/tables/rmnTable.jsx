@@ -159,10 +159,21 @@ export default function ColumnTypesGrid() {
     setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.View } });
   };
 
-  const handleDeleteClick = (id) => () => {
-    setRows(rows.filter((row) => row.id !== id));
-    console.log(id)
-    onRmBatchDelete(id)
+  const handleDeleteClick = (id) => async () => {
+    console.log("rmn is " + id);
+    await fetch(`http://localhost:3002/rawmateriallot/delete/${id}`, {
+      method: "DELETE",
+    });
+    fetch("http://localhost:3002/rawmateriallot/view")
+      .then((data) => data.json())
+      .then((data) => {
+        for (let i = 0; i < data.length; i++) {
+          var obj = data[i];
+          Object.assign(obj, { ["id"]: obj["rmn"] });
+          data[i] = obj;
+        }
+        setTableData(data);
+      });
   };
 
   const handleCancelClick = (id) => () => {

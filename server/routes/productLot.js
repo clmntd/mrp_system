@@ -13,8 +13,7 @@ router.post("/add", urlencodedParser, async (req, res) => {
   try {
     const product_lot = req.body;
     // console.log(product_lot);
-    const newProductLot =
-      await pool.query(`insert into public.product_lot(product_id, lot_no, status, notes, expiry_date, qty)
+    const newProductLot = await pool.query(`insert into public.product_lot(product_id, lot_no, status, notes, expiry_date, qty)
     values('${product_lot.id}', '${product_lot.lotno}', '${product_lot.status}', '${product_lot.notes}', '${product_lot.edate}', '${product_lot.qty}')`);
     console.log("new prd lot in post", newProductLot);
     res.json(product_lot);
@@ -172,12 +171,13 @@ router.put("/updatermnprod", urlencodedParser, async (req, res) => {
 router.delete("/delete/:id", urlencodedParser, async (req, res) => {
   try {
     const { id } = req.params;
-    await pool.query(`delete from public.raw_materials_of_product where lot_no= $1`,[
-      id,
-    ]);
-    await pool.query(`delete from public.product_lot where lot_no= $1`, [
-      id,
-    ]);
+    await pool.query(
+      `delete from public.raw_materials_of_product where lot_no= $1`,
+      [id]
+    );
+    await pool.query(`delete from public.product_lot where lot_no= $1`, 
+      [id]
+    );
     res.json("Product Lot was deleted!");
   } catch (err) {
     console.log(err.message);

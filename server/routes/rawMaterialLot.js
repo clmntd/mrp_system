@@ -66,12 +66,15 @@ router.put("/update", urlencodedParser, async (req, res) => {
 });
 
 //DELETE
-router.delete("/delete", urlencodedParser, async (req, res) => {
+router.delete("/delete/:id", urlencodedParser, async (req, res) => {
   try {
-    const { rmn } = req.body;
-    const deleteRawMaterialLot = await pool.query(
-      `delete from public.raw_material_lot where rmn= $1`,
-      [rmn]
+    const { id } = req.params;
+    await pool.query(
+      `delete from public.raw_materials_of_product where rmn= $1`,
+      [id]
+    );
+    await pool.query(`delete from public.raw_material_lot where rmn= $1`,
+      [id]
     );
     res.json("Raw Material Lot was deleted!");
   } catch (err) {

@@ -230,12 +230,9 @@ export default function ColumnTypesGrid() {
   };
 
   const handleDeleteClick = (id) => async () => {
+    console.log("product lot is " + id);
     await fetch(`http://localhost:3002/productlot/delete/${id}`, {
-      method: 'DELETE',
-      body: JSON.stringify({}),
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      method: "DELETE",
     });
     fetch("http://localhost:3002/productlot/view/")
       .then((data) => data.json())
@@ -418,8 +415,6 @@ export default function ColumnTypesGrid() {
       },
     },
   ];
-
-
 
   const currentUrl = window.location.href;
   const lastPart = currentUrl.split("/").slice(-1)[0];

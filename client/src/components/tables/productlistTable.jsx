@@ -246,15 +246,10 @@ export default function ColumnTypesGrid() {
     setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.View } });
   };
 
-
   const handleDeleteClick = (id) => async () => {
-    console.log("id is " +id)
+    console.log("product id is " + id);
     await fetch(`http://localhost:3002/product/delete/${id}`, {
-      method: 'DELETE',
-      body: JSON.stringify({}),
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      method: "DELETE",
     });
     fetch("http://localhost:3002/product/view")
       .then((data) => data.json())
@@ -265,7 +260,6 @@ export default function ColumnTypesGrid() {
           data[i] = obj;
           initialRows[i] = obj;
         }
-
         setTableData(data);
       });
   };

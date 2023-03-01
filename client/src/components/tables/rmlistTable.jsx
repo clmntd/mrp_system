@@ -221,7 +221,7 @@ export default function ColumnTypesGrid() {
       .then((data) => {
         for (let i = 0; i < data.length; i++) {
           var obj = data[i];
-          Object.assign(obj, { ["id"]: i });
+          Object.assign(obj, { ["id"]: obj["ds_part_no"] });
           data[i] = obj;
         }
 
@@ -248,8 +248,21 @@ export default function ColumnTypesGrid() {
     setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.View } });
   };
 
-  const handleDeleteClick = (id) => () => {
-    setRows(rows.filter((row) => row.id !== id));
+  const handleDeleteClick = (id) => async () => {
+    console.log("dspn is " + id);
+    await fetch(`http://localhost:3002/rawmaterial/delete/${id}`, {
+      method: "DELETE",
+    });
+    fetch("http://localhost:3002/rawmaterial/view")
+      .then((data) => data.json())
+      .then((data) => {
+        for (let i = 0; i < data.length; i++) {
+          var obj = data[i];
+          Object.assign(obj, { ["id"]: obj["ds_part_no"] });
+          data[i] = obj;
+        }
+        setTableData(data);
+      });
   };
 
   const handleCancelClick = (id) => () => {
